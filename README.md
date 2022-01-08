@@ -5,6 +5,7 @@ Project Dios Ex Machina
 ## Setup
 ```bash
 brew install libusb
+pip install -r requirements.txt
 ```
 
 ## Test Command
