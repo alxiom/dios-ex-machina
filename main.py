@@ -22,6 +22,8 @@ while is_print:
         printer.reset()
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         lpr = os.popen("lpr", "w")
-        lpr.write(f"#{i + 1}\n\n현재 시간\n\n{now}\n\n--\n\n")
+        message = f"#{i + 1}\n\n현재 시간\n\n{now}\n\n--\n\n"
+        lpr.write(message)
         lpr.close()
+        print(message)
         time.sleep(sleep_second)
