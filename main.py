@@ -3,8 +3,7 @@ import usb.core
 import datetime
 import time
 
-# running_time = 180 * 60.0  # second
-running_time = 30.0
+running_time = 30  # second
 now = time.time()
 end_time = now + running_time
 
@@ -25,9 +24,9 @@ print("Start Printing")
 while is_print:
     for i, printer in enumerate(printers):
         printer.reset()
-        now = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        date_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         lpr = os.popen("lpr", "w")
-        message = f"#{i + 1} / {now}"
+        message = f"#{i + 1} / {date_time}"
         lpr.write(message)
         lpr.close()
         print(message)
