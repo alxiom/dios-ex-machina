@@ -8,7 +8,7 @@ now = time.time()
 end_time = now + running_time
 
 
-def parse_text(file_name, slicing=48):
+def parse_text(file_name, slicing=23):
     text = []
     with open(file_name, "r", encoding="utf-8") as text_file:
         read_line = text_file.readlines()
