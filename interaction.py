@@ -12,15 +12,16 @@ arduino = serial.Serial(
     timeout=0.1,
 )
 
-distance_threshold = 1000.0
-block_threshold = 1.0
-skip_threshold = 1.0
-print_threshold = 5.0
+distance_limit = 1000.0
+void_limit = 7.0
+block_limit = 1.0
+print_limit = 1.0
 
-printer_available = False
+void_time = 0.0
+block_time = 0.0
+previous_time = now
 lines = "\n" * 20
-open_timer = [now, now]
-block_timer = [now]
+printer_available = True
 
 while end_time - now > 0:
     now = time.time()
@@ -32,30 +33,20 @@ while end_time - now > 0:
             print(e)
             distance = float("inf")
 
-        open_duration = open_timer[-1] - open_timer[0]
-
-        print(f"{now:10.2f} / {distance:4.1f} / {open_duration:2.2f} / {printer_available}")
-
-        if distance < distance_threshold:
-            if now - block_timer[-1] < skip_threshold:
-                block_timer.append(now)
-                if len(block_timer) > 2:
-                    block_timer.pop(1)
-                block_duration = block_timer[-1] - block_timer[0]
-                if block_duration > block_threshold and printer_available:
-                    print("print!")
-                    printer_available = False
-                    lpr = os.popen("lpr", "w")
-                    lpr.write(f"void time: {open_duration:.2f} sec{lines}.")
-                    lpr.close()
-                    block_timer[0] = now
-            else:
-                block_timer = [now]
+        if distance > distance_limit:
+            void_time += now - previous_time
+            printer_available = void_time > print_limit
         else:
-            if now - open_timer[-1] < skip_threshold:
-                open_timer.append(now)
-                if len(open_timer) > 2:
-                    open_timer.pop(1)
-                printer_available = open_duration > print_threshold
-            else:
-                open_timer = [now, now]
+            if printer_available:
+                block_time += now - previous_time
+            if block_time > block_limit and void_time > void_limit and printer_available:
+                print("print!")
+                lpr = os.popen("lpr", "w")
+                lpr.write(f"void time: {void_time:.2f} sec{lines}.")
+                lpr.close()
+                void_time = 0.0
+                block_time = 0.0
+                printer_available = False
+
+        print(f"{now:10.2f} / {distance:4.1f} / {void_time:2.2f} / {block_time:2.2f} / {printer_available}")
+        previous_time = now
