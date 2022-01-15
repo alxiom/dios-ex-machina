@@ -46,8 +46,10 @@ while end_time - now > 0:
     for i, printer in enumerate(printers):
         if i == 0:
             message = text_wave[text_wave_cnt % text_wave_length]
+            text_wave_cnt += 1
         elif i == 1:
             message = text_click[text_click_cnt % text_click_length]
+            text_click_cnt += 1
         else:
             date_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
             message = f"#{i + 1} / {date_time}"
