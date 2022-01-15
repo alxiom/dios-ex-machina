@@ -7,7 +7,6 @@ running_time = 3 * 60 * 60  # second
 now = time.time()
 end_time = now + running_time
 
-is_print = True
 sleep_second = 3.0
 id_vendor = 0x1fc9
 id_product = 0x2016
@@ -21,7 +20,7 @@ for i, device in enumerate(devices):
     printers.append(usb.core.find(idVendor=id_vendor, idProduct=id_product, bus=device.bus, address=device.address))
 
 print("Start Printing")
-while is_print:
+while end_time - now > 0:
     for i, printer in enumerate(printers):
         printer.reset()
         date_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
@@ -31,5 +30,4 @@ while is_print:
         lpr.close()
         print(message)
         time.sleep(sleep_second)
-        now = time.time()
-        is_print = (end_time - now) > 0
+    now = time.time()
