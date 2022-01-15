@@ -12,7 +12,7 @@ arduino = serial.Serial(
     timeout=0.1,
 )
 
-distance_limit = 1000.0
+distance_limit = 1500.0
 void_limit = 7.0
 block_limit = 1.0
 print_limit = 1.0
