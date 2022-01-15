@@ -3,7 +3,7 @@ import usb.core
 import datetime
 import time
 
-running_time = 30  # second
+running_time = 3 * 60 * 60  # second
 now = time.time()
 end_time = now + running_time
 
