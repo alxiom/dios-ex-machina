@@ -1,6 +1,5 @@
 import os
 import usb.core
-import datetime
 import time
 
 running_time = 3 * 60 * 60  # second
@@ -22,12 +21,15 @@ def parse_text(file_name, slicing=20):
 
 text_wave = parse_text("text_wave.txt")
 text_click = parse_text("text_click.txt")
+text_test = parse_text("test.txt")
 
 text_wave_length = len(text_wave)
 text_click_length = len(text_click)
+text_test_length = len(text_test)
 
 text_wave_cnt = 0
 text_click_cnt = 0
+text_test_cnt = 0
 
 sleep_second = 3.0
 id_vendor = 0x1fc9
@@ -51,8 +53,8 @@ while end_time - now > 0:
             message = text_click[text_click_cnt % text_click_length]
             text_click_cnt += 1
         else:
-            date_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-            message = f"#{i + 1} / {date_time}"
+            message = text_test[text_test_cnt % text_test_length]
+            text_test_cnt += 1
         printer.reset()
         lpr = os.popen("lpr", "w")
         lpr.write(message)
