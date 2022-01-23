@@ -1,11 +1,11 @@
 import os
 import usb.core
-import datetime
 import time
 
 running_time = 3 * 60 * 60  # second
 now = time.time()
 end_time = now + running_time
+printer_name = "POS__Receipt_Printer"
 
 
 def parse_text(file_name, slicing=20):
@@ -25,9 +25,13 @@ text_click = parse_text("text_click.txt")
 
 text_wave_length = len(text_wave)
 text_click_length = len(text_click)
+pic_length = 3
+pic_skip_length = 4
 
 text_wave_cnt = 0
 text_click_cnt = 0
+pic_cnt = 0
+pic_skip_cnt = 0
 
 sleep_second = 3.0
 id_vendor = 0x1fc9
@@ -44,19 +48,24 @@ for i, device in enumerate(devices):
 print("Start Printing")
 while end_time - now > 0:
     for i, printer in enumerate(printers):
-        if i == 0:
-            message = text_wave[text_wave_cnt % text_wave_length]
-            text_wave_cnt += 1
-        elif i == 1:
-            message = text_click[text_click_cnt % text_click_length]
-            text_click_cnt += 1
+        if i == 0 or i == 1:
+            if i == 0:
+                message = text_wave[text_wave_cnt % text_wave_length]
+                text_wave_cnt += 1
+            else:
+                message = text_click[text_click_cnt % text_click_length]
+                text_click_cnt += 1
+            printer.reset()
+            lpr = os.popen("lpr", "w")
+            lpr.write(message)
+            lpr.close()
+            print(i, message)
+            time.sleep(sleep_second)
         else:
-            date_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-            message = f"#{i + 1} / {date_time}"
-        printer.reset()
-        lpr = os.popen("lpr", "w")
-        lpr.write(message)
-        lpr.close()
-        print(i, message)
-        time.sleep(sleep_second)
+            if pic_skip_cnt % pic_skip_length == 0:
+                printer.reset()
+                os.system(f"lpr -P {printer_name} pic{pic_cnt % pic_length:03d}.jpg")
+                pic_cnt += 1
+            else:
+                pic_skip_cnt += 1
     now = time.time()
