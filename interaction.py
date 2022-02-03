@@ -52,5 +52,5 @@ while end_time - now > 0:
                 block_time = 0.0
                 printer_available = False
 
-        print(f"{now:10.2f} / {distance:4.1f} / {void_time:2.2f} / {block_time:2.2f} / {printer_available}")
+        print(f"{now:10.2f} / {distance:4.1f} / {void_time:2.2f} / {block_time:2.2f} / {printer_available}", flush=True)
         previous_time = now
