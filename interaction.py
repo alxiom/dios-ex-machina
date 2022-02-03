@@ -24,7 +24,7 @@ print_limit = 1.0
 void_time = 0.0
 block_time = 0.0
 previous_time = now
-lines = "\n" * 20
+lines = "\n" * 70
 printer_available = True
 
 while end_time - now > 0:
