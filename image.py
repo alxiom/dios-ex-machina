@@ -12,9 +12,9 @@ sleep_second = 12.0
 
 print("Start Printing")
 while end_time - now > 0:
-    os.system(f"lpr -P {printer_name} pic/{image_cnt % image_length:03d}.jpeg")
+    os.system(f"lpr -P {printer_name} pic/pic{image_cnt % image_length:03d}.jpeg")
     image_cnt += 1
-    print(f"image_cnt={image_cnt} print pic/{image_cnt % image_length:03d}.jpeg")
+    print(f"image_cnt={image_cnt} print pic{image_cnt % image_length:03d}.jpeg")
     time.sleep(sleep_second)
     now = time.time()
 
