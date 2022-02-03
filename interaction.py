@@ -1,3 +1,4 @@
+import sys
 import serial
 import time
 import os
@@ -6,8 +7,11 @@ running_time = 3 * 60 * 60  # second
 now = time.time()
 end_time = now + running_time
 
+port = sys.argv[1]
+print(f"arduino port: {port}")
+
 arduino = serial.Serial(
-    port="/dev/cu.usbserial-1D1140",
+    port=f"/dev/{port}",
     baudrate=115200,
     timeout=0.1,
 )
