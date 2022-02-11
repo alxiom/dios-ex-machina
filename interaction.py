@@ -16,15 +16,15 @@ arduino = serial.Serial(
     timeout=0.1,
 )
 
-distance_limit = 1500.0
-void_limit = 7.0
-block_limit = 1.0
-print_limit = 1.0
+distance_limit = 1200.0
+void_limit = 10.0
+block_limit = 5.0
+print_limit = 15.0
 
 void_time = 0.0
 block_time = 0.0
 previous_time = now
-lines = "\n" * 160
+lines = "\n" * 100
 printer_available = True
 
 while end_time - now > 0:
@@ -54,3 +54,4 @@ while end_time - now > 0:
 
         print(f"{now:10.2f} / {distance:4.1f} / {void_time:2.2f} / {block_time:2.2f} / {printer_available}", flush=True)
         previous_time = now
+        time.sleep(0.2)
